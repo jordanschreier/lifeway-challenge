@@ -1,7 +1,7 @@
 plugins {
+	id 'java'
 	id 'org.springframework.boot' version '2.6.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
 }
 
 group = 'com.jordanschreier'
@@ -20,12 +20,25 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+
 	runtimeOnly 'com.h2database:h2'
+
+	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.register('printUrls') {
+	doLast {
+		println "Swagger: http://localhost:8080/swagger-ui/index.html"
+		println "H2 Console: http://localhost:8080/h2-console"
+	}
+}
+
+bootRun.dependsOn 'printUrls'
